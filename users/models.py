@@ -1,7 +1,9 @@
 
+from pyexpat import model
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.hashers import make_password
+from django.utils import timezone
 
 
 class UserManager(BaseUserManager):
@@ -31,7 +33,8 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser):
     email = models.EmailField(unique=True, blank=False)
     full_name = models.TextField(null=False, blank=False)
-    age = models.IntegerField(null=False, blank=False)
+    age = models.IntegerField(null=True, blank=True)
+    slug = models.TextField(null=False, blank=False, unique=True)
     is_super = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
     is_admin= models.BooleanField(default=False)

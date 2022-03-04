@@ -15,6 +15,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from threading import Thread
 from django.contrib.auth import logout
 from django.core.validators import EmailValidator
+from utils.UserSlugManager import UserSlugManager
 
 
 
@@ -67,8 +68,10 @@ class RegisterUser(APIView):
             pass
 
             
+        slug = UserSlugManager().generateUserSlug()
 
-        data = {"email":email, "full_name":full_name, "age":age, "password": make_password(password)}
+        data = {"email":email, "full_name":full_name, "age":age,"slug":slug, "password": make_password(password)}
+
         serializer = UserSerializer(data=data)
         
 
@@ -117,6 +120,27 @@ class Login(APIView):
 
         except User.DoesNotExist as e:
             return HttpResponse.error("User with this email does not exist.")
+
+
+class GetUserFromSlug(APIView):
+    def get(self, request, slug):
+        try:
+            u = User.object.get(slug=slug)
+            token = AuthToken.objects.create(u)
+            data ={
+                "user": UserSerializer(u).data,
+                "token":token[1],
+            }
+            if u.is_active:
+                return HttpResponse.success("User retrieved Successfully", data)
+            else:
+                return HttpResponse.error("User account not activated")
+
+           
+
+        except User.DoesNotExist as e:
+            return HttpResponse.error("User with this slug does not exist.")
+
 
 class LogoutUser(APIView):
     def post(self, request):
@@ -201,3 +225,6 @@ def sendUserForgotPasswordEmail(request, user):
     
     email = SendEmail('emails/UserPasswordChange.html',"User Password Change",{"activationLink":activationLink}, user.email)
     email.send()
+
+
+
