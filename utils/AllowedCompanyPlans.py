@@ -1,0 +1,5 @@
+ALLOWED_COMPANY_PLANS = [
+    "STARTER",
+    "PREMIUM",
+    "GOLDEN"
+]
