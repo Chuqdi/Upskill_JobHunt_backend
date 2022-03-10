@@ -9,7 +9,7 @@ from django.conf import settings
 
 
 def getFavicon(request):
-    path = os.path.join(settings.BASE_DIR, "favicon.ico")
+    path = os.path.join(settings.BASE_DIR, "static/favicon.ico")
     response = FileResponse(open(path, 'rb'))
     return response
 
