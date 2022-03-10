@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.hashers import make_password
 from django.utils import timezone
+from django.db.models.signals import post_save
 
 
 class UserManager(BaseUserManager):
@@ -60,4 +61,20 @@ class User(AbstractBaseUser):
 
 
 
+class UserPaymentManager(models.Model):
+    is_paid = models.BooleanField(default=False)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="payment")
+    date_paid = models.DateTimeField(default=timezone.now)
 
+    def __str__(self):
+        return self.user.email
+
+
+
+def onUserCreated(instance, created, *args, **kwargs):
+    if created:
+        UserPaymentManager.objects.create(user= instance)
+
+
+
+post_save.connect(onUserCreated, sender=User)
