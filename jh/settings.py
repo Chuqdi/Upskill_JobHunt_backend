@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-&&pp%_d*5zw(hvmz!*u@#ljf!ubiock*b!yaseqf-9f-n*nv#h
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["https://owerri-job-hunt-backend.herokuapp.com", "http://127.0.0.1:8000","http://localhost:8000"]
 
 
 # Application definition
@@ -154,7 +154,9 @@ DEFAULT_FROM_EMAIL = "jobHunt.ng"
 
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
-    "http://localhost:3000"
+    "http://localhost:3000",
+    "https://622a26c8abc2d86b110f5fab--festive-booth-d4c8ec.netlify.app",
+    "http://622a26c8abc2d86b110f5fab--festive-booth-d4c8ec.netlify.app"
 ]
 
 
