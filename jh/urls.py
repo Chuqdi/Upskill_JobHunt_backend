@@ -3,7 +3,7 @@ import os
 from django.contrib import admin
 from django.urls import path, include
 from users.ApiViews import TestApi
-from django.http import FileResponse
+from django.http import FileResponse, JsonResponse
 from django.conf import settings
 
 
@@ -13,7 +13,11 @@ def getFavicon(request):
     response = FileResponse(open(path, 'rb'), status =200)
     return response
 
+
+def home(request):
+    return JsonResponse({"welcome":"Owerri Job Hunt API"})
 urlpatterns = [
+    path("", home, name="home",),
     path("test", TestApi.as_view(), name="testApi"),
     path('admin/', admin.site.urls),
     path("favicon.ico", getFavicon),
