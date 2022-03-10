@@ -85,8 +85,8 @@ class RegisterUser(APIView):
             sendUserAcctEmail.start()
             return HttpResponse.success("User created successfully, please check your email to active your account", data)
         
-
-        return serializer.errors
+        print(serializer.errors)
+        return HttpResponse.error("Error Registering User")
 
 
 class Login(APIView):
