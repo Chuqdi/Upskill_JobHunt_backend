@@ -152,13 +152,15 @@ EMAIL_HOST_USER="morganhezekiah11@gmail.com"
 EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = "jobHunt.ng"
 
-CORS_ALLOWED_ORIGINS = [
-    "http://127.0.0.1:3000",
-    "http://localhost:3000",
-    "https://622a26c8abc2d86b110f5fab--festive-booth-d4c8ec.netlify.app",
-    "http://622a26c8abc2d86b110f5fab--festive-booth-d4c8ec.netlify.app"
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://127.0.0.1:3000",
+#     "http://localhost:3000",
+#     "https://622a26c8abc2d86b110f5fab--festive-booth-d4c8ec.netlify.app",
+#     "http://622a26c8abc2d86b110f5fab--festive-booth-d4c8ec.netlify.app"
+# ]
 
+
+CORS_ALLOW_ALL_ORIGINS =True
 
 # CORS_ORIGIN_WHITELIST = [
 #      "http://127.0.0.1:3000",
