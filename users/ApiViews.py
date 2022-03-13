@@ -1,9 +1,10 @@
 from django.http import JsonResponse
+from django.utils import timezone
 from rest_framework.views import APIView
 from redisManager import RedisManager
 
 from utils.Frontend import FRONTEND_DOMAIN
-from .models import User
+from .models import User, UserPaymentManager
 from .serializers import UserSerializer
 from django.contrib.auth.hashers import make_password, check_password
 from knox.models import AuthToken
@@ -11,11 +12,11 @@ from utils.httpResponse import HttpResponse
 from utils.JWTTokenManager import UserTokenManager
 from utils.SendMail import SendEmail
 from utils.RandomStrings import GenerateRandomString
-from django.contrib.sites.shortcuts import get_current_site
 from threading import Thread
 from django.contrib.auth import logout
 from django.core.validators import EmailValidator
 from utils.UserSlugManager import UserSlugManager
+from rest_framework import permissions
 
 
 
@@ -125,6 +126,28 @@ class Login(APIView):
         except User.DoesNotExist as e:
             return HttpResponse.error("User with this email does not exist.")
 
+
+class UpdateUserPayment(APIView):
+    permission_classes = [
+        permissions.IsAuthenticated
+    ]
+    def patch(self, request):
+        userID = request.data.get("userID")
+
+        if not userID:
+            return HttpResponse.error("Please enter user ID")
+        users = User.object.filter(id= userID)
+        if len(users) > 0:
+            user = users[0]
+            payment = UserPaymentManager.objects.get(user= user.id)
+            payment.is_paid = True
+            payment.save()
+            
+            return HttpResponse.success("User Payment Updated Successfully")
+
+        else:
+            return HttpResponse.error("User With This ID does not exist")
+        pass
 
 class GetUserFromSlug(APIView):
     def get(self, request, slug):
