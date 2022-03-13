@@ -44,6 +44,8 @@ class RegisterUser(APIView):
         email = request.data.get("email")
         age = request.data.get("age")
         password = request.data.get("password")
+
+        
         
         if not email:
             return HttpResponse.error("Please enter an email")
@@ -74,10 +76,12 @@ class RegisterUser(APIView):
 
         serializer = UserSerializer(data=data)
         
+        
 
         if serializer.is_valid():
             serializer.save()
             u = User.object.get(email=email)
+            print(u.password)
             data = {
                 "user":serializer.validated_data,
             }
@@ -101,6 +105,7 @@ class Login(APIView):
         try:
             u = User.object.get(email=email)
             if u.email == email:
+                print(password)
                 if check_password(password, u.password):
                     token = AuthToken.objects.create(u)
                     data ={
