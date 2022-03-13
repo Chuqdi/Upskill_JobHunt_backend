@@ -81,7 +81,6 @@ class RegisterUser(APIView):
         if serializer.is_valid():
             serializer.save()
             u = User.object.get(email=email)
-            print(u.password)
             data = {
                 "user":serializer.validated_data,
             }
