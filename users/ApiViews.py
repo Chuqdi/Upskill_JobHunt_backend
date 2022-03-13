@@ -193,9 +193,6 @@ class CompleteUserForgotPassword(APIView):
 
 
 def CompleteUserAccountActivation(request, token):
-    u=User.object.first()
-    return HttpResponse.success("User account activated succesfully",{"user":UserSerializer(u).data})
-
     tokenManager = UserTokenManager()
     res = tokenManager.decodeToken(token)
     if  res.get("state"):
