@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from redisManager import RedisManager
 
 from utils.Frontend import FRONTEND_DOMAIN
-from .models import User, UserPaymentManager
+from .models import Sponsor, User, UserPaymentManager
 from .serializers import UserSerializer
 from django.contrib.auth.hashers import make_password, check_password
 from knox.models import AuthToken
@@ -83,7 +83,7 @@ class RegisterUser(APIView):
             serializer.save()
             u = User.object.get(email=email)
             data = {
-                "user":serializer.validated_data,
+                "user":UserSerializer(u).data,
             }
             sendUserAcctEmail = Thread(target=sendUserAccountActivationEmail, args=(request,u))
             sendUserAcctEmail.start()
@@ -168,6 +168,19 @@ class GetUserFromSlug(APIView):
         except User.DoesNotExist as e:
             return HttpResponse.error("User with this slug does not exist.")
 
+def resendUserRegterationEmail(request, userID):
+    users = User.object.filter(id=userID)
+    if len(users) > 0:
+        user = users[0]
+        t = Thread(target=sendUserAccountActivationEmail, args=( request,user ))
+        t.start()
+        return HttpResponse.success("User Activation Email Sent Successfully")
+    
+    return HttpResponse.error("Please user ID does not exist")
+
+
+
+    
 
 class LogoutUser(APIView):
     def post(self, request):
@@ -217,6 +230,18 @@ class CompleteUserForgotPassword(APIView):
         else:
             return HttpResponse.error(res.get("message"))
 
+class CreateSponsor(APIView):
+    def post(self, request):
+        website = request.data.get("website")
+        email = request.data.get("email")
+
+        if not email:
+            return HttpResponse.error("Please enter Sponsors email")
+        if not website:
+            return HttpResponse.error("Please enter Sponsors website address.")
+
+        sponsor = Sponsor.objects.create(email = email, website=website)
+        return HttpResponse.success("Sponsorship added, we will contact u very soon")
 
 
 def CompleteUserAccountActivation(request, token):

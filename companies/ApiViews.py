@@ -1,3 +1,4 @@
+from ast import arg
 from django.http import JsonResponse
 from rest_framework.views import APIView
 from redisManager import RedisManager
@@ -196,6 +197,10 @@ class UpdateCompanyPlan(APIView):
             return HttpResponse.success("Company Plan Updated Successfully", data)
         return HttpResponse.error("Error Updating Company Plan")
 
+    
+
+
+
 
 
 class GetCompanyFromSlug(APIView):
@@ -221,6 +226,6 @@ def sendUserAccountActivationEmail(request, user):
     tokenGenerated = tokenGen.generateToken(user)
     activationLink = FRONTEND_DOMAIN+"users/user-email-activation/"+GenerateRandomString.randomStringGenerator(40)+"/"+tokenGenerated+"/"+GenerateRandomString.randomStringGenerator(20)
     
-    email = SendEmail('emails/UserAccountActivation.html',"User Account Activation",{"activationLink":activationLink, "company_account": True }, user.email)
+    email = SendEmail('emails/UserAccountActivation.html',"Company Account Activation",{"activationLink":activationLink, "company_account": True }, user.email)
     email.send()
 

@@ -14,6 +14,6 @@ class SendEmail():
 
     def send(self):
         print(self.to)
-        msg = EmailMultiAlternatives(self.subject, self.text_content, 'Dont Reply <support@JobHunt.ng>', [self.to,])
+        msg = EmailMultiAlternatives(self.subject, self.text_content,'Dont Reply <do_not_reply@owerrijobhunt.ng>', [self.to,])
         msg.attach_alternative(self.template, "text/html")
         msg.send()

@@ -78,3 +78,14 @@ def onUserCreated(instance, created, *args, **kwargs):
 
 
 post_save.connect(onUserCreated, sender=User)
+
+
+
+class Sponsor(models.Model):
+    email = models.EmailField(null=False, blank=False)
+    website = models.TextField(null=False, blank=False)
+    joined_on = models.DateTimeField(default=timezone.now)
+
+
+    def __str__(self):
+        return self.email

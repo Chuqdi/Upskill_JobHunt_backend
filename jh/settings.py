@@ -150,7 +150,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_PASSWORD="wmiixksozsqletoc"
 EMAIL_HOST_USER="morganhezekiah11@gmail.com"
 EMAIL_PORT = 587
-DEFAULT_FROM_EMAIL = "jobHunt.ng"
+DEFAULT_FROM_EMAIL = 'Dont Reply <do_not_reply@owerrijobhunt.ng>'
 
 # CORS_ALLOWED_ORIGINS = [
 #     "http://127.0.0.1:3000",

@@ -1,6 +1,7 @@
 
 from django.urls import path
-from .ApiViews import CompleteUserAccountActivation, RegisterUser, Login, CompleteUserForgotPassword, UpdateUserPayment, UserForgotPassword, LogoutUser, GetUserFromSlug
+
+from .ApiViews import CompleteUserAccountActivation, RegisterUser, Login, CompleteUserForgotPassword, UpdateUserPayment, UserForgotPassword, LogoutUser, GetUserFromSlug, resendUserRegterationEmail
 
 urlpatterns = [
     path("register", RegisterUser.as_view(), name ="registerUser"),
@@ -11,5 +12,7 @@ urlpatterns = [
     path("complete-forgot-password", CompleteUserForgotPassword.as_view(), name="CompleteUserForgotPassword"),
     path("getUserFromSlug/<str:slug>", GetUserFromSlug.as_view(), name="getUserFromSlug"),
     path("complete-user-email-activation/<str:token>", CompleteUserAccountActivation),
+    path("resendUserRegterationEmail/<userID>", resendUserRegterationEmail, name="resendUserRegterationEmail")
+
 
 ]

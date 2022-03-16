@@ -7,6 +7,6 @@ urlpatterns = [
     path("register", RegisterCompany.as_view(), name="RegisterCompany" ),
     path("login", LoginCompany.as_view(), name="RegisterCompany" ),
     path("updatePlan", UpdateCompanyPlan.as_view(), name="Update Company Plan"),
-    path("getCompanyBySlug/<slug>", GetCompanyFromSlug.as_view(), name="GetCompanyBySlug")
+    path("getCompanyBySlug/<slug>", GetCompanyFromSlug.as_view(), name="GetCompanyBySlug"),
 
 ]
