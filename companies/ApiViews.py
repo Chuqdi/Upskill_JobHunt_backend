@@ -45,7 +45,6 @@ class RegisterCompany(APIView):
         company_password = request.data.get("company_password")
 
 
-        print(company_mobile_contact)
 
         
         if not company_name:
@@ -106,7 +105,7 @@ class RegisterCompany(APIView):
             )
 
             serializerCompany = CompanySerializer(Company.objects.get(id=c.id))
-            sendUserAcctEmail = Thread(target=sendUserAccountActivationEmail, args=(request,u))
+            sendUserAcctEmail = Thread(target=sendCompanyEmail, args=(request,u, 'emails/UserAccountActivation.html'))
             sendUserAcctEmail.start()
             data = {"company": serializerCompany.data}
             return HttpResponse.success("Company created successfully, please check your email to active company  account", data)
@@ -190,7 +189,9 @@ class UpdateCompanyPlan(APIView):
         }
         serializer = CompanySerializer(instance=c, data=data, partial=True)
         if serializer.is_valid():
-            serializer.save()
+            c = serializer.save()
+            t = Thread(target=sendCompanyEmail, args =(request, c,"emails/CompanyPaymentCompleted.html"))
+            t.start()
             data ={
                 "company": serializer.data,
             }
@@ -221,11 +222,10 @@ class GetCompanyFromSlug(APIView):
 
 
 
-def sendUserAccountActivationEmail(request, user):
+def sendCompanyEmail(request, user, template):
     tokenGen = UserTokenManager()
     tokenGenerated = tokenGen.generateToken(user)
     activationLink = FRONTEND_DOMAIN+"users/user-email-activation/"+GenerateRandomString.randomStringGenerator(40)+"/"+tokenGenerated+"/"+GenerateRandomString.randomStringGenerator(20)
     
-    email = SendEmail('emails/UserAccountActivation.html',"Company Account Activation",{"activationLink":activationLink, "company_account": True }, user.email)
+    email = SendEmail(template,"Company Account Activation",{"activationLink":activationLink, "company_account": True }, user.email)
     email.send()
-

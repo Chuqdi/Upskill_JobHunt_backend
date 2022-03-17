@@ -152,6 +152,15 @@ EMAIL_HOST_USER="morganhezekiah11@gmail.com"
 EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = 'Dont Reply <do_not_reply@owerrijobhunt.ng>'
 
+
+# EMAIL_USE_TLS = True
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.mailgun.org'
+# EMAIL_HOST_PASSWORD="bea1c9b63a4d8eca5a9d015634a7ef7a-dbc22c93-bf853f83"
+# EMAIL_HOST_USER="postmaster@sandbox4b980a9633d7440e93bdfb51d2b8871c.mailgun.org"
+# EMAIL_PORT = 587
+# DEFAULT_FROM_EMAIL = 'support@owerrijobhunt.ng'
+
 # CORS_ALLOWED_ORIGINS = [
 #     "http://127.0.0.1:3000",
 #     "http://localhost:3000",
