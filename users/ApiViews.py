@@ -1,3 +1,4 @@
+from re import sub
 from django.http import JsonResponse
 from django.utils import timezone
 from rest_framework.views import APIView
@@ -14,9 +15,9 @@ from utils.SendMail import SendEmail
 from utils.RandomStrings import GenerateRandomString
 from threading import Thread
 from django.contrib.auth import logout
-from django.core.validators import EmailValidator
 from utils.UserSlugManager import UserSlugManager
 from rest_framework import permissions
+from utils.Validators import Validate
 
 
 
@@ -57,10 +58,9 @@ class RegisterUser(APIView):
         if not age:
             return HttpResponse.error("Please enter age")
 
-        try:
-            EmailValidator()(email)
-        except Exception as e:
-            return HttpResponse.error("Sorry, your email is not valid")
+        if not Validate.validateEmail(email):
+            return HttpResponse.error("Please enter a valid email")
+
 
         
 
@@ -240,8 +240,51 @@ class CreateSponsor(APIView):
         if not website:
             return HttpResponse.error("Please enter Sponsors website address.")
 
+        if not Validate.validateEmail(email):
+            return HttpResponse.error("Please enter a valid email")
+
+        if not Validate.validateUrl(website):
+            return HttpResponse.error("Please enter a valid URL address")
+        
+        sponsors = Sponsor.objects.filter(email=email)
+        if len(sponsors) > 0:
+            return HttpResponse.error("This Email Is alread registered as a sponsor")
+
+
+        sponsors = Sponsor.objects.filter(website=website)
+        if len(sponsors) > 0:
+            return HttpResponse.error("This Website Is alread registered as a sponsor")
+
+            
         sponsor = Sponsor.objects.create(email = email, website=website)
         return HttpResponse.success("Sponsorship added, we will contact u very soon")
+
+class SendUserContactUsEmail(APIView):
+    def post(self, request):
+        name = request.data.get("name")
+        email = request.data.get("email")
+        subject = request.data.get("subject")
+        message = request.data.get("message")
+
+        if not name:
+            return HttpResponse.error("Please enter your name ")
+
+        if not email:
+            return HttpResponse.error("Please enter your email ")
+        if not subject:
+            return HttpResponse.error("Please enter your subject ")
+        if not message:
+            return HttpResponse.error("Please enter your message ")
+        data = {
+            "name":name,
+            "email":email,
+            "subject":subject,
+            "message":message
+        }
+        t =Thread(target=sendUserContactUsEmail, args =(data,))
+        t.start()
+        return HttpResponse.success("Thanks For Contacting Us We will reply you soon, if need be")
+
 
 
 def CompleteUserAccountActivation(request, token):
@@ -255,10 +298,12 @@ def CompleteUserAccountActivation(request, token):
     else:
         return HttpResponse.error(res.get("message"))
 
+        
 
 
-
-
+def sendUserContactUsEmail(data):
+    email = SendEmail('emails/ContactUsEmail.html',"User Contact Us-owerrijobhunt.ng",data, "morganhezekiah11@gmail.com")
+    email.send()
 
 def sendUserAccountActivationEmail(request, user):
     tokenGen = UserTokenManager()
