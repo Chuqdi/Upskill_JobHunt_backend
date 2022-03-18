@@ -285,7 +285,10 @@ class SendUserContactUsEmail(APIView):
         t.start()
         return HttpResponse.success("Thanks For Contacting Us We will reply you soon, if need be")
 
-
+class TestUser(APIView):
+    def get(self, request):
+        user = User.object.first()
+        return HttpResponse.success(data={"user":UserSerializer(user).data}, message="hdggd")
 
 def CompleteUserAccountActivation(request, token):
     tokenManager = UserTokenManager()

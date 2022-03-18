@@ -10,7 +10,7 @@ class UserPaymentManagerSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    company = CompanySerializer(read_only=True, many=True)
+    company = CompanySerializer(read_only=True)
     payment = UserPaymentManagerSerializer(read_only=True)
 
     class Meta:

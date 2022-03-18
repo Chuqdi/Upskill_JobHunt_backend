@@ -1,9 +1,10 @@
 
 from django.urls import path
 
-from .ApiViews import CompleteUserAccountActivation, CreateSponsor, RegisterUser, Login, CompleteUserForgotPassword, SendUserContactUsEmail, UpdateUserPayment, UserForgotPassword, LogoutUser, GetUserFromSlug, resendUserRegterationEmail
+from .ApiViews import CompleteUserAccountActivation, CreateSponsor, RegisterUser, Login, CompleteUserForgotPassword, SendUserContactUsEmail, UpdateUserPayment, UserForgotPassword, LogoutUser, GetUserFromSlug, resendUserRegterationEmail, TestUser
 
 urlpatterns = [
+    path("testUser", TestUser.as_view(), name="tets"),
     path("register", RegisterUser.as_view(), name ="registerUser"),
     path("login", Login.as_view(), name="LoginUser"),
     path("updateUserPayment", UpdateUserPayment.as_view(), name="UpdateUserPayment"),
