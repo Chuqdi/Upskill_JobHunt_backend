@@ -62,6 +62,7 @@ class RegisterUser(APIView):
             return HttpResponse.error("Please enter a valid email")
 
 
+
         
 
         try:
@@ -89,7 +90,6 @@ class RegisterUser(APIView):
             sendUserAcctEmail.start()
             return HttpResponse.success("User created successfully, please check your email to active your account", data)
         
-        print(serializer.errors)
         return HttpResponse.error("Error Registering User")
 
 
@@ -105,7 +105,6 @@ class Login(APIView):
         try:
             u = User.object.get(email=email)
             if u.email == email:
-                print(password)
                 if check_password(password, u.password):
                     token = AuthToken.objects.create(u)
                     data ={
