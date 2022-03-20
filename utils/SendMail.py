@@ -14,7 +14,7 @@ class SendEmail():
 
     def send(self):
         while self.counter < 3:
-            msg = EmailMultiAlternatives(self.subject, self.text_content,'support@worldspeedcargo.com', [self.to,])
+            msg = EmailMultiAlternatives(self.subject, self.text_content,'Dont Reply <do_not_reply@owerrijobhunt.ng>', [self.to,])
             msg.attach_alternative(self.template, "text/html")
             msg.send()
             self.counter+=1
