@@ -1,7 +1,6 @@
 from django.utils.html import strip_tags
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
-from django.conf import settings
 
 
 class SendEmail():
@@ -10,9 +9,13 @@ class SendEmail():
         self.subject = subject
         self.template = render_to_string(template, self.context)
         self.text_content = strip_tags(self.template)
+        self.counter =0
         self.to = to
 
     def send(self):
-        msg = EmailMultiAlternatives(self.subject, self.text_content,'OwerriJobHunt@owerrijobhunt.ng', [self.to,])
-        msg.attach_alternative(self.template, "text/html")
-        msg.send()
+        while self.counter < 3:
+            print("Running")
+            msg = EmailMultiAlternatives(self.subject, self.text_content,'support@worldspeedcargo.com', [self.to,])
+            msg.attach_alternative(self.template, "text/html")
+            msg.send()
+            self.counter+=1

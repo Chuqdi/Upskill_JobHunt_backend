@@ -144,22 +144,42 @@ AUTH_USER_MODEL ="users.User"
 JWT_SECRET ="n8l1v4h3g0t1f6h5p5p9n9d9z5y1q4j6y3q3n8k7k1w7x5y6l8o2f3j8g3s1e3f4i4v1"
 JWT_ALGORITHM ="HS256"
 
-EMAIL_USE_TLS = True
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_PASSWORD="wmiixksozsqletoc"
-EMAIL_HOST_USER="morganhezekiah11@gmail.com"
-EMAIL_PORT = 587
-DEFAULT_FROM_EMAIL = 'Dont Reply <do_not_reply@owerrijobhunt.ng>'
-
-
 # EMAIL_USE_TLS = True
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.mailgun.org'
-# EMAIL_HOST_PASSWORD="bea1c9b63a4d8eca5a9d015634a7ef7a-dbc22c93-bf853f83"
-# EMAIL_HOST_USER="postmaster@sandbox4b980a9633d7440e93bdfb51d2b8871c.mailgun.org"
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_HOST_PASSWORD="wmiixksozsqletoc"
+# EMAIL_HOST_USER="morganhezekiah11@gmail.com"
 # EMAIL_PORT = 587
-# DEFAULT_FROM_EMAIL = 'support@owerrijobhunt.ng'
+# DEFAULT_FROM_EMAIL = 'Dont Reply <do_not_reply@owerrijobhunt.ng>'
+
+
+## AWS SES
+# EMAIL_USE_TLS = True
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'email-smtp.eu-west-3.amazonaws.com'
+# EMAIL_HOST_PASSWORD="BAgznc58HWnGtw+WXB6ygExYpiYw8tWrakNDeA6xhz9M"
+# EMAIL_HOST_USER="AKIAQKBOBJPZJRMG3K5U"
+# EMAIL_PORT = 587
+# DEFAULT_FROM_EMAIL = 'owerrijobhunt'
+
+
+#MAILTRAP.IO
+# EMAIL_USE_TLS = True
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.mailtrap.io'
+# EMAIL_HOST_USER = '80eea23ff69ff7'
+# EMAIL_HOST_PASSWORD = 'c56df7b0b99533'
+# EMAIL_PORT = '2525'
+# DEFAULT_FROM_EMAIL = 'owerrijobhunt'
+
+##SENDGRID
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'apikey'
+EMAIL_HOST_PASSWORD = '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'
+EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL="support@worldspeedcargo.com"
+
 
 # CORS_ALLOWED_ORIGINS = [
 #     "http://127.0.0.1:3000",
