@@ -173,12 +173,12 @@ JWT_ALGORITHM ="HS256"
 # DEFAULT_FROM_EMAIL = 'owerrijobhunt'
 
 ##SENDGRID
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = 'apikey'
-EMAIL_HOST_PASSWORD = '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'
-EMAIL_PORT = 587
-DEFAULT_FROM_EMAIL="support@worldspeedcargo.com"
+EMAIL_BACKEND = os.environ.get("EMAIL_BACKEND")
+EMAIL_HOST = str(os.environ.get("EMAIL_HOST"))
+EMAIL_HOST_USER = str(os.environ.get("EMAIL_HOST_USER"))
+EMAIL_HOST_PASSWORD = str(os.environ.get("EMAIL_HOST_PASSWORD"))
+EMAIL_PORT = str(os.environ.get("EMAIL_PORT"))
+DEFAULT_FROM_EMAIL=str(os.environ.get("DEFAULT_FROM_EMAIL"))
 
 
 # CORS_ALLOWED_ORIGINS = [
