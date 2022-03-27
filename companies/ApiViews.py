@@ -1,3 +1,4 @@
+
 from ast import arg
 from django.http import JsonResponse
 from rest_framework.views import APIView
@@ -38,29 +39,22 @@ class RegisterCompany(APIView):
     
     def post(self, request):
         company_name = request.data.get("company_name")
-        company_address = request.data.get("company_address")
-        company_area_of_interest = request.data.get("company_area_of_interest")
-        company_mobile_contact = request.data.get("company_mobile_contact")
         company_email_address = request.data.get("company_email_address")
         company_password = request.data.get("company_password")
+        company_type= request.data.get("company_type")
 
 
 
         
         if not company_name:
             return HttpResponse.error("Please enter the company name")
-        if not company_address:
-            return HttpResponse.error("Please enter the company address")
 
-        
-        if not company_area_of_interest:
-            return HttpResponse.error("Please enter the company area of interest")
-        if not company_mobile_contact:
-            return HttpResponse.error("Please enter the company mobile contact")
         if not company_email_address:
             return HttpResponse.error("Please enter company email address")
         if not company_password:
             return HttpResponse.error("Please enter company password")
+        if not company_type:
+            return HttpResponse.error("Please enter company type")
 
         try:
             EmailValidator()(company_email_address)
@@ -83,8 +77,6 @@ class RegisterCompany(APIView):
 
 
 
-        
-
         serializerUser = UserSerializer(data=dataUser)
         
         
@@ -96,11 +88,8 @@ class RegisterCompany(APIView):
             # START REGISTERING COMPANY
             c = Company.objects.create(
                 company_name=company_name,
-                company_address=company_address,
-                company_area_of_interest=company_area_of_interest,
-                company_mobile_contact=company_mobile_contact,
-                company_email_address = company_email_address,
                 company_slug= UserSlugManager().generateUserSlug(),
+                company_area_of_interest=company_type,
                 registered_by = u
             )
 
@@ -161,6 +150,60 @@ class LoginCompany(APIView):
         except User.DoesNotExist as e:
             return HttpResponse.error("Company with this Email does not exist does not exist.")
 
+
+class UpdateProfile(APIView):
+    # permission_classes =[permissions.IsAuthenticated]
+
+
+    def put(self, request, companyID):
+        company_name = request.data.get("company_name")
+        company_address = request.data.get("company_address")
+        company_area_of_interest = request.data.get("company_area_of_interest")
+        company_mobile_contact = request.data.get("company_mobile_contact")
+        company_email_address = request.data.get("company_email_address")
+
+
+
+        
+        if not company_name:
+            return HttpResponse.error("Please enter the company name")
+        if not company_address:
+            return HttpResponse.error("Please enter the company address")
+
+        
+        if not company_area_of_interest:
+            return HttpResponse.error("Please enter the company area of interest")
+        if not company_mobile_contact:
+            return HttpResponse.error("Please enter the company mobile contact")
+        if not company_email_address:
+            return HttpResponse.error("Please enter company email address")
+
+
+        try:
+            co = Company.objects.get(id=companyID)
+
+        except Company.DoesNotExist as e:
+            return HttpResponse.error("Company ID does not match a query object")
+        c1 = CompanySerializer(co, { 
+            "company_name":company_name,
+            "company_address":company_address,
+            "company_area_of_interest":company_area_of_interest,
+            "company_mobile_contact":company_mobile_contact,
+
+        }, partial=True)
+
+        if c1.is_valid():
+            user = co.registered_by
+            user.email = company_email_address
+            user.save()
+            c= c1.save()
+            
+            return HttpResponse.success("Company Credentials Updated Successfully", {
+                "company":CompanySerializer(co).data
+            })
+        return HttpResponse.error("Error Updating Company Profile")
+        
+        
 
 
 class UpdateCompanyPlan(APIView):

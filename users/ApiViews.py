@@ -1,3 +1,4 @@
+from functools import partial
 from re import sub
 from django.http import JsonResponse
 from django.utils import timezone
@@ -44,7 +45,6 @@ class RegisterUser(APIView):
     def post(self, request):
         full_name = request.data.get("fullName")
         email = request.data.get("email")
-        age = request.data.get("age")
         password = request.data.get("password")
 
         
@@ -55,8 +55,7 @@ class RegisterUser(APIView):
             return HttpResponse.error("Please enter a password")
         if not full_name:
             return HttpResponse.error("Please enter a full name")
-        if not age:
-            return HttpResponse.error("Please enter age")
+   
 
         if not Validate.validateEmail(email):
             return HttpResponse.error("Please enter a valid email")
@@ -74,7 +73,7 @@ class RegisterUser(APIView):
             
         slug = UserSlugManager().generateUserSlug()
 
-        data = {"email":email, "full_name":full_name, "age":age,"slug":slug, "password": make_password(password)}
+        data = {"email":email, "full_name":full_name,"slug":slug, "password": make_password(password)}
 
         serializer = UserSerializer(data=data)
         
@@ -92,6 +91,38 @@ class RegisterUser(APIView):
         
         return HttpResponse.error("Error Registering User")
 
+class UpdateProfile(APIView):
+    permission_classes=[ permissions.IsAuthenticated ]
+    def put(self, request):
+        full_name = request.data.get("fullName")
+        email = request.data.get("email")
+        age = request.data.get("age")
+
+        if not email:
+            return HttpResponse.error("Please enter an email")
+
+        if not full_name:
+            return HttpResponse.error("Please enter a full name")
+        if not age:
+            return HttpResponse.error("Please enter age")
+
+        data = {"email":email, "full_name":full_name, "age":age}
+
+        serializer = UserSerializer(request.user, data=data, partial=True)
+        
+        
+
+        if serializer.is_valid():
+            serializer.save()
+            u = User.object.get(email=email)
+            data = {
+                "user":UserSerializer(u).data,
+            }
+            # sendUserAcctEmail = Thread(target=sendUserAccountActivationEmail, args=(request,u))
+            # sendUserAcctEmail.start()
+            return HttpResponse.success("User profile Updated successfully", data)
+        
+        return HttpResponse.error("Error Updating User Profile User")
 
 class Login(APIView):
     def post(self, request):
@@ -246,6 +277,7 @@ class CreateSponsor(APIView):
             return HttpResponse.error("Please enter a valid URL address")
         
         sponsors = Sponsor.objects.filter(email=email)
+
         if len(sponsors) > 0:
             return HttpResponse.error("This Email Is alread registered as a sponsor")
 

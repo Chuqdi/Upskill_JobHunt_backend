@@ -21,7 +21,14 @@ urlpatterns = [
     path("test", TestApi.as_view(), name="testApi"),
     path('admin/', admin.site.urls),
     path("favicon.ico", getFavicon),
-    path("users/", include("users.urls")),
+    path("api/user/candidate/", include("users.urls")),
     path("topics/", include("topics.urls")),
-    path("companies/", include("companies.urls"))
+    path("api/user/company/", include("companies.urls")),
+    path("api/job/", include("jobs.urls"))
 ]
+
+
+
+# path("users/", include("users.urls")),
+#     path("topics/", include("topics.urls")),
+#     path("companies/", include("companies.urls"))

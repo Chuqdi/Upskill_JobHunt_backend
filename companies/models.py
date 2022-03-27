@@ -4,7 +4,6 @@ from users.models import User
 
 class Company(models.Model):
     company_name = models.TextField(null=False, blank=False)
-    company_email_address = models.EmailField(null=False, blank=False)
     company_mobile_contact = models.CharField(max_length=40, null=False, blank=False)
     company_address = models.TextField(null=False, blank=False)
     company_area_of_interest = models.TextField(null=False, blank=False)
