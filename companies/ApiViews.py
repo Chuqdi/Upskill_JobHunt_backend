@@ -72,7 +72,7 @@ class RegisterCompany(APIView):
             
         slug = UserSlugManager().generateUserSlug()
 
-        dataUser = {"email":company_email_address, "full_name":company_name,"slug":slug, "password": make_password(company_password)}
+        dataUser = {"email":company_email_address,"is_active":True, "full_name":company_name,"slug":slug, "password": make_password(company_password)}
 
 
 

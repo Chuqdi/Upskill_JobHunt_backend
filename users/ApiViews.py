@@ -73,7 +73,7 @@ class RegisterUser(APIView):
             
         slug = UserSlugManager().generateUserSlug()
 
-        data = {"email":email, "full_name":full_name,"slug":slug, "password": make_password(password)}
+        data = {"email":email,is_active=True, "full_name":full_name,"slug":slug, "password": make_password(password)}
 
         serializer = UserSerializer(data=data)
         
