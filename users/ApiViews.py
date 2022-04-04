@@ -43,9 +43,10 @@ class RegisterUser(APIView):
         return HttpResponse.success("User", data={"morgan":"dhdd"})
     
     def post(self, request):
-        full_name = request.data.get("fullName")
         email = request.data.get("email")
         password = request.data.get("password")
+        username = request.data.get("username")
+        phoneNumber = request.data.get("phoneNumber")
 
         
         
@@ -53,8 +54,10 @@ class RegisterUser(APIView):
             return HttpResponse.error("Please enter an email")
         if not password:
             return HttpResponse.error("Please enter a password")
-        if not full_name:
-            return HttpResponse.error("Please enter a full name")
+        if not username:
+            return HttpResponse.error("Please enter a Username")
+        if not phoneNumber:
+            return HttpResponse.error("Please enter your phone number")
    
 
         if not Validate.validateEmail(email):
@@ -70,10 +73,22 @@ class RegisterUser(APIView):
         except User.DoesNotExist as e:
             pass
 
+        try:
+            u = User.object.get(username=username)
+            return HttpResponse.error("Username already registered, please choose another.")
+        except User.DoesNotExist as e:
+            pass
+
+        try:
+            u = User.object.get(phoneNumber=phoneNumber)
+            return HttpResponse.error("Phone Number already registered, please choose another.")
+        except User.DoesNotExist as e:
+            pass
+
             
         slug = UserSlugManager().generateUserSlug()
 
-        data = {"email":email,"is_active":True, "full_name":full_name,"slug":slug, "password": make_password(password)}
+        data = {"email":email,"is_active":True,"username":username,"phoneNumber":phoneNumber,"slug":slug, "password": make_password(password)}
 
         serializer = UserSerializer(data=data)
         
@@ -91,22 +106,25 @@ class RegisterUser(APIView):
         
         return HttpResponse.error("Error Registering User")
 
+
+
+
 class UpdateProfile(APIView):
     permission_classes=[ permissions.IsAuthenticated ]
     def put(self, request):
-        full_name = request.data.get("fullName")
         email = request.data.get("email")
-        age = request.data.get("age")
+        username = request.data.get("username")
 
         if not email:
             return HttpResponse.error("Please enter an email")
 
-        if not full_name:
-            return HttpResponse.error("Please enter a full name")
-        if not age:
-            return HttpResponse.error("Please enter age")
+        if not username:
+            return HttpResponse.error("Please enter your username")
 
-        data = {"email":email, "full_name":full_name, "age":age}
+
+       
+
+        data = {"email":email, "username":username}
 
         serializer = UserSerializer(request.user, data=data, partial=True)
         
@@ -128,6 +146,7 @@ class Login(APIView):
     def post(self, request):
         email = request.data.get("email")
         password = request.data.get("password")
+        
         if not email:
             return HttpResponse.error("Please enter an email")
         if not password:

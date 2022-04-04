@@ -16,6 +16,7 @@ def getFavicon(request):
 
 def home(request):
     return JsonResponse({"welcome":"Owerri Job Hunt API"})
+    
 urlpatterns = [
     path("", home, name="home",),
     path("test", TestApi.as_view(), name="testApi"),

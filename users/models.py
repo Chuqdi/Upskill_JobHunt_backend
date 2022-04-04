@@ -33,8 +33,8 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser):
     email = models.EmailField(unique=True, blank=False)
-    full_name = models.TextField(null=False, blank=False)
-    age = models.IntegerField(null=True, blank=True)
+    phoneNumber = models.TextField(unique=True)
+    username = models.TextField(unique=True)
     slug = models.TextField(null=False, blank=False, unique=True)
     is_super = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)

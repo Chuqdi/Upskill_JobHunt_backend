@@ -42,6 +42,7 @@ class RegisterCompany(APIView):
         company_email_address = request.data.get("company_email_address")
         company_password = request.data.get("company_password")
         company_type= request.data.get("company_type")
+        company_phoneNumber = request.data.get("company_phoneNumber")
 
 
 
@@ -56,6 +57,9 @@ class RegisterCompany(APIView):
         if not company_type:
             return HttpResponse.error("Please enter company type")
 
+        if not company_phoneNumber:
+            return HttpResponse.error("Please enter company phone Number")
+
         try:
             EmailValidator()(company_email_address)
         except Exception as e:
@@ -69,10 +73,16 @@ class RegisterCompany(APIView):
         except User.DoesNotExist as e:
             pass
 
+        try:
+            u = User.object.get(phoneNumber=company_phoneNumber)
+            return HttpResponse.error("Phone Number already registered")
+        except User.DoesNotExist as e:
+            pass
+
             
         slug = UserSlugManager().generateUserSlug()
 
-        dataUser = {"email":company_email_address,"is_active":True, "full_name":company_name,"slug":slug, "password": make_password(company_password)}
+        dataUser = {"email":company_email_address,"username":company_name,"is_active":True, "phoneNumber":company_phoneNumber,"slug":slug, "password": make_password(company_password)}
 
 
 
@@ -102,6 +112,7 @@ class RegisterCompany(APIView):
             
             
         else:
+            print(serializerUser.errors)
             return JsonResponse({ "userError": serializerUser.error_messages}, status=400)
         
 
