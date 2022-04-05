@@ -33,7 +33,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser):
     email = models.EmailField(unique=True, blank=False)
-    phoneNumber = models.TextField(unique=True)
+    phoneNumber = models.TextField(unique=False)
     username = models.TextField(unique=True)
     slug = models.TextField(null=False, blank=False, unique=True)
     is_super = models.BooleanField(default=False)

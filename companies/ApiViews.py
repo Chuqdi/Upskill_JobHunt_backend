@@ -112,7 +112,6 @@ class RegisterCompany(APIView):
             
             
         else:
-            print(serializerUser.errors)
             return JsonResponse({ "userError": serializerUser.error_messages}, status=400)
         
 
