@@ -88,7 +88,7 @@ class RegisterUser(APIView):
             
         slug = UserSlugManager().generateUserSlug()
 
-        data = {"email":email,"is_active":True,"username":username,"phoneNumber":phoneNumber,"slug":slug, "password": make_password(password)}
+        data = {"email":email,"username":username,"phoneNumber":phoneNumber,"slug":slug, "password": make_password(password)}
 
         serializer = UserSerializer(data=data)
         
@@ -217,7 +217,7 @@ class GetUserFromSlug(APIView):
         except User.DoesNotExist as e:
             return HttpResponse.error("User with this slug does not exist.")
 
-def resendUserRegterationEmail(request, userID):
+def resendUserRegisterationEmail(request, userID):
     users = User.object.filter(id=userID)
     if len(users) > 0:
         user = users[0]
@@ -361,7 +361,7 @@ def sendUserContactUsEmail(data):
 def sendUserAccountActivationEmail(request, user):
     tokenGen = UserTokenManager()
     tokenGenerated = tokenGen.generateToken(user)
-    activationLink = FRONTEND_DOMAIN+"user/emailActivation"+tokenGenerated
+    activationLink = FRONTEND_DOMAIN+"user/emailActivation/"+tokenGenerated
     
     email = SendEmail('emails/UserAccountActivation.html',"User Account Activation",{"activationLink":activationLink}, user.email)
     email.send()
