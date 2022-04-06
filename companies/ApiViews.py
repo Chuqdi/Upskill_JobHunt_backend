@@ -278,7 +278,7 @@ class GetCompanyFromSlug(APIView):
 def sendCompanyEmail(request, user, template):
     tokenGen = UserTokenManager()
     tokenGenerated = tokenGen.generateToken(user)
-    activationLink = FRONTEND_DOMAIN+"users/user-email-activation/"+GenerateRandomString.randomStringGenerator(40)+"/"+tokenGenerated+"/"+GenerateRandomString.randomStringGenerator(20)
+    activationLink = FRONTEND_DOMAIN+"user/emailActivation"+tokenGenerated
     
     email = SendEmail(template,"Company Account Activation",{"activationLink":activationLink, "company_account": True }, user.email)
     email.send()

@@ -361,7 +361,7 @@ def sendUserContactUsEmail(data):
 def sendUserAccountActivationEmail(request, user):
     tokenGen = UserTokenManager()
     tokenGenerated = tokenGen.generateToken(user)
-    activationLink = FRONTEND_DOMAIN+"users/user-email-activation/"+GenerateRandomString.randomStringGenerator(40)+"/"+tokenGenerated+"/"+GenerateRandomString.randomStringGenerator(20)
+    activationLink = FRONTEND_DOMAIN+"user/emailActivation"+tokenGenerated
     
     email = SendEmail('emails/UserAccountActivation.html',"User Account Activation",{"activationLink":activationLink}, user.email)
     email.send()
