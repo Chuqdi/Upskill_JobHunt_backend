@@ -293,7 +293,7 @@ class CreateSponsor(APIView):
             return HttpResponse.error("Please enter a valid email")
 
         if not Validate.validateUrl(website):
-            return HttpResponse.error("Please enter a valid URL address")
+            return HttpResponse.error("Please enter a valid URL address.Following this format https://www.owerrijobhunt.ng")
         
         sponsors = Sponsor.objects.filter(email=email)
 
