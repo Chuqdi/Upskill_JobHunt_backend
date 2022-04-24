@@ -1,13 +1,11 @@
-from functools import partial
 from re import sub
 from django.http import JsonResponse
-from django.utils import timezone
 from rest_framework.views import APIView
 from redisManager import RedisManager
 
 from utils.Frontend import FRONTEND_DOMAIN
-from .models import Sponsor, User, UserPaymentManager
-from .serializers import UserSerializer
+from .models import Sponsor, User, UserPaymentManager, Profile
+from .serializers import UserSerializer, ProfileSerializer
 from django.contrib.auth.hashers import make_password, check_password
 from knox.models import AuthToken
 from utils.httpResponse import HttpResponse
@@ -17,8 +15,53 @@ from utils.RandomStrings import GenerateRandomString
 from threading import Thread
 from django.contrib.auth import logout
 from utils.UserSlugManager import UserSlugManager
-from rest_framework import permissions
+from rest_framework import permissions, parsers
 from utils.Validators import Validate
+from rest_framework.viewsets import ModelViewSet
+
+
+
+class UpdateUserProfile(APIView):
+    permission_classes =[permissions.IsAuthenticated]
+    parser_classes = [ parsers.FormParser, parsers.MultiPartParser]
+    def put(self, request):
+        
+        twitterHandle = request.data.get("twitterHandle")
+        facebookHandle = request.data.get("facebookHandle")
+        linkedInHandle = request.data.get("linkedInHandle")
+        
+        if twitterHandle:
+            if not Validate.validateUrl(twitterHandle):
+                return HttpResponse.error("Please enter a valid URL address.Following this format https://www.owerrijobhunt.ng")
+
+        if facebookHandle:
+            if not Validate.validateUrl(facebookHandle):
+                return HttpResponse.error("Please enter a valid URL address.Following this format https://www.owerrijobhunt.ng")
+
+        if linkedInHandle:
+            if not Validate.validateUrl(linkedInHandle):
+                return HttpResponse.error("Please enter a valid URL address.Following this format https://www.owerrijobhunt.ng")
+
+        data = request.data.dict()
+        for i in data.copy():
+            if not data[i]:
+                data.pop(i)
+        
+        
+        
+
+        instance = request.user.profile
+
+        
+
+        serializer = ProfileSerializer(data=data, instance = instance, partial=True)
+
+        if serializer.is_valid():
+            s = serializer.save()
+            return HttpResponse.success("User Profile Updated Successfully", data = serializer.data)
+        print(serializer.errors)
+        return HttpResponse.error("Error Updating User Profile")
+
 
 
 
@@ -334,6 +377,9 @@ class SendUserContactUsEmail(APIView):
         t =Thread(target=sendUserContactUsEmail, args =(data,))
         t.start()
         return HttpResponse.success("Thanks For Contacting Us We will reply you soon, if need be")
+
+
+
 
 class TestUser(APIView):
     def get(self, request):

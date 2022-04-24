@@ -5,6 +5,7 @@ from django.urls import path, include
 from users.ApiViews import TestApi
 from django.http import FileResponse, JsonResponse
 from django.conf import settings
+from django.conf.urls.static import static
 
 
 
@@ -26,7 +27,7 @@ urlpatterns = [
     path("topics/", include("topics.urls")),
     path("api/user/company/", include("companies.urls")),
     path("api/job/", include("jobs.urls"))
-]
+]+ static(settings.MEDIA_URL, document_root =settings.MEDIA_ROOT)
 
 
 

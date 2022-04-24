@@ -1,9 +1,13 @@
 
-from django.urls import path
-
+from django.urls import  path
 from .ApiViews import (CompleteUserAccountActivation, CreateSponsor, 
-RegisterUser, Login, CompleteUserForgotPassword, SendUserContactUsEmail, UpdateUserPayment,
+RegisterUser, Login, CompleteUserForgotPassword, SendUserContactUsEmail, UpdateUserPayment, UpdateUserProfile,
  UserForgotPassword, LogoutUser, GetUserFromSlug, resendUserRegisterationEmail, TestUser, UpdateProfile )
+
+
+
+
+
 
 urlpatterns = [
     path("testUser", TestUser.as_view(), name="tets"),
@@ -25,7 +29,9 @@ urlpatterns = [
     path("complete-user-email-activation/<str:token>",
          CompleteUserAccountActivation),
     path("resendUserRegisterationEmail/<userID>",
-         resendUserRegisterationEmail, name="resendUserRegterationEmail")
+         resendUserRegisterationEmail, name="resendUserRegterationEmail"),
+    path("user-update-profile", UpdateUserProfile.as_view(), name="UpdateUserProfile"),
+
 
 
 ]

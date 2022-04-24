@@ -3,8 +3,14 @@ from pyexpat import model
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.hashers import make_password
+from django.dispatch import receiver
 from django.utils import timezone
 from django.db.models.signals import post_save
+from cloudinary.models import CloudinaryField
+
+
+
+from utils.RandomStrings import GenerateRandomString
 
 
 class UserManager(BaseUserManager):
@@ -17,7 +23,8 @@ class UserManager(BaseUserManager):
 
         
         email = self.normalize_email(email)
-        user = self.model(email=email,password=make_password(password))
+        slug = GenerateRandomString.randomStringGenerator(90)
+        user = self.model(email=email,password=make_password(password), slug=slug)
         user.save(using=self._db)
         return user
 
@@ -59,7 +66,22 @@ class User(AbstractBaseUser):
     object = UserManager()
 
 
+class Profile(models.Model):
+    first_name = models.TextField(null=True, blank=True)
+    last_name= models.TextField(null=True, blank=True)
+    twitterHandle = models.URLField(null=True, blank=True)
+    facebookHandle = models.URLField(null=True, blank=True)
+    linkedInHandle = models.URLField(null=True, blank=True)
+    jobRole = models.TextField(null=True, blank=True)
 
+
+    profile_image = CloudinaryField("user/profile",null=True, blank=True)
+    resume = CloudinaryField("user/resume",null=True, blank=True)
+    skills = models.TextField(null=True, blank=True)
+    user = models.OneToOneField(User,related_name="profile", on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return self.user.email
 
 class UserPaymentManager(models.Model):
     is_paid = models.BooleanField(default=False)
@@ -70,14 +92,19 @@ class UserPaymentManager(models.Model):
         return self.user.email
 
 
-
-def onUserCreated(instance, created, *args, **kwargs):
+@receiver(post_save, sender=User) 
+def create_profile(sender, instance, created, **kwargs):
     if created:
+        Profile.objects.create(user=instance,profile_image ="image/upload/v1650829247/noProfileImage_bbsutn.png")
         UserPaymentManager.objects.create(user= instance)
 
 
+@receiver(post_save, sender=User)
+def save_profile(sender, instance, **kwargs):
+    instance.profile.save()
 
-post_save.connect(onUserCreated, sender=User)
+
+
 
 
 

@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 import django_heroku
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -39,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
      "corsheaders",
+     'cloudinary',
      "emails",
      "users",
      "topics",
@@ -189,6 +193,8 @@ JWT_ALGORITHM ="HS256"
 #     "http://622a26c8abc2d86b110f5fab--festive-booth-d4c8ec.netlify.app"
 # ]
 
+MEDIA_URL="/media/"
+MEDIA_ROOT =os.path.join(BASE_DIR, MEDIA_URL)
 
 CORS_ALLOW_ALL_ORIGINS =True
 
@@ -209,3 +215,10 @@ CORS_ALLOW_METHODS = [
 
 # django_heroku.settings(locals(), staticfiles=False)
 django_heroku.settings(locals())
+
+
+cloudinary.config( 
+  cloud_name = "dkx4uksdl", 
+  api_key = "159165716289418", 
+  api_secret = "6dbgT-vOZoyPnZDbU67nVpSfa_w" 
+)
