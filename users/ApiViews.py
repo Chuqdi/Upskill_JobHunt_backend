@@ -131,7 +131,7 @@ class RegisterUser(APIView):
             
         slug = UserSlugManager().generateUserSlug()
 
-        data = {"email":email,"username":username,"phoneNumber":phoneNumber,"is_active":True,"slug":slug, "password": make_password(password)}
+        data = {"email":email,"username":username,"phoneNumber":phoneNumber,"slug":slug, "password": make_password(password)}
 
         serializer = UserSerializer(data=data)
         
@@ -179,8 +179,8 @@ class UpdateProfile(APIView):
             data = {
                 "user":UserSerializer(u).data,
             }
-            # sendUserAcctEmail = Thread(target=sendUserAccountActivationEmail, args=(request,u))
-            # sendUserAcctEmail.start()
+            sendUserAcctEmail = Thread(target=sendUserAccountActivationEmail, args=(request,u))
+            sendUserAcctEmail.start()
             return HttpResponse.success("User profile Updated successfully", data)
         
         return HttpResponse.error("Error Updating User Profile User")

@@ -149,13 +149,13 @@ AUTH_USER_MODEL ="users.User"
 JWT_SECRET ="n8l1v4h3g0t1f6h5p5p9n9d9z5y1q4j6y3q3n8k7k1w7x5y6l8o2f3j8g3s1e3f4i4v1"
 JWT_ALGORITHM ="HS256"
 
-# EMAIL_USE_TLS = True
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_HOST_PASSWORD="wmiixksozsqletoc"
-# EMAIL_HOST_USER="morganhezekiah11@gmail.com"
-# EMAIL_PORT = 587
-# DEFAULT_FROM_EMAIL = 'Dont Reply <do_not_reply@owerrijobhunt.ng>'
+EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_PASSWORD="ejpkciqqkxopvjwy"
+EMAIL_HOST_USER="upskilldeveloper@gmail.com"
+EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = 'Dont Reply <do_not_reply@owerrijobhunt.ng>'
 
 
 # AWS SES
