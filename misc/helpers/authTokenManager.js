@@ -29,10 +29,13 @@ export const DELETE_COMPANY_SLUG = async ()=>{
     await localStorage.removeItem(COMPANY_SLUG_KEY);
 }
 
-export const CHECK_BUSINESS_SLUG_EXISTS = async ()=>{
-    if(typeof(await localStorage[COMPANY_SLUG_KEY]) === "undefined") {return false;}
-    if(await localStorage[COMPANY_SLUG_KEY].length < 1){
-        return false;
-    }
-    return true;
-}
+export const CHECK_BUSINESS_SLUG_EXISTS =  () =>  localStorage.hasOwnProperty(COMPANY_SLUG_KEY)
+
+
+// export const  = async ()=>{
+//     if(typeof(await localStorage[]) === "undefined") {return false;}
+//     if(await localStorage[COMPANY_SLUG_KEY].length < 1){
+//         return false;
+//     }
+//     return true;
+// }

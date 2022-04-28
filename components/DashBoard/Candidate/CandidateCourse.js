@@ -28,7 +28,7 @@ const CandidateCourse = () => {
               <Courses key={post.id} title={post.title} time={post.time} description={post.description}/>
             )}
           </div>
-          <div className="flex py-8 justify-center  text-white">
+          <div className="flex py-8 justify-center  text-white" style={{ marginTop:"50px;"}}>
             <Pagination postsPerPage={postsPerPage} totalPosts={posts.length} paginate={paginate}/>
           </div>
       </CandidateHoc>
